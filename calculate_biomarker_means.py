@@ -1,7 +1,11 @@
 ## Calculate mean for each unique patient ID exported from QuPath into a tab separeted values from single or multiple files. 
 ## Contact rkacprzyk01@qub.ac.uk
 
-import csv, argparse, os, statistics
+## !!TODO
+## -If note column is present, remove the column
+## -Remove Missing TMAs
+
+import csv, argparse, os, numpy #statistics
 from glob import glob
 
 
@@ -57,7 +61,7 @@ with open(allout, 'r') as tsvoutf:
 			if uid == row2[header.index("Unique ID")]:
 				one_mean.append(float(row2[header.index("Num Positive per mm^2")]))
 		tsvoutf.seek(1)
-		sender.append([uid, statistics.mean(one_mean)])
+		sender.append([uid, numpy.nanmean(one_mean) ])#statistics.mean(one_mean)])
 	## Create final file and write out unique ids and means
 	if os.path.isfile(args.fresults):
 		os.remove(args.fresults)
